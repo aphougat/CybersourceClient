@@ -93,14 +93,14 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         request.put("bill_to_email","testcard@test.com");
         request.put("bill_to_forename","hhhhtest");
         request.put("bill_to_surname","testh");
-        request.put("card_cvn","123");
-        request.put("card_expiry_date","03-2019");
-        request.put("card_number","4111111111111111");
-        request.put("card_type","001");
+        //request.put("card_cvn","123");
+        //request.put("card_expiry_date","03-2019");
+        //request.put("card_number","4111111111111111");
+        //request.put("card_type","001");
         request.put("currency","USD");
-        request.put("customer_cookies_accepted","true");
-        request.put("customer_ip_address","170.248.1.192");
-        request.put("device_fingerprint_id","s18933746866080");
+        //request.put("customer_cookies_accepted","true");
+        //request.put("customer_ip_address","170.248.1.192");
+        //request.put("device_fingerprint_id","s18933746866080");
         request.put("item_0_quantity","1");
         request.put("item_0_sku","0282974001004");
         request.put("item_0_unit_price","39.99");
@@ -116,7 +116,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         request.put("merchant_defined_data22","Card");
         request.put("merchant_defined_data8","home-delivery");
         request.put("payment_method","card");
-        request.put("profile_id","FRWEB");
+        //request.put("profile_id","FRWEB");
         request.put("reference_number","18281005");
         request.put("ship_to_address_city","San Jose");
         request.put("ship_to_address_country","US");
@@ -126,7 +126,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         request.put("ship_to_forename","hhhhtest");
         request.put("ship_to_surname","testh");
                 request.put("transaction_type","authorization,create_payment_token");
-        request.put("unsigned_field_names","card_type,card_cvn,card_number,card_expiry_date");
+        //request.put("unsigned_field_names","card_type,card_cvn,card_number,card_expiry_date");
 
        return request;
 
@@ -146,7 +146,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         }*/
 
         //cartModel.getCode()
-        String merchantReferenceCode = String.valueOf(cartidnumber+1);
+        String merchantReferenceCode = String.valueOf(cartidnumber+=1);
        /* cartModel.setMerchantReferenceCode(merchantReferenceCode);
         modelService.save(cartModel);*/
 
