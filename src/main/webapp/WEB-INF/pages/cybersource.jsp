@@ -4,7 +4,7 @@
 
     <form  method="post" action="${requestaddress}">
                ${content}
-        <input type="submit" name="submit" value="Buy Now">
+        <input type="submit" name="submit" value="Buy Now"/>
     </form>
 </body>
 </html>
