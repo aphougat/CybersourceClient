@@ -1,15 +1,42 @@
-<html>
-<body>
-	<h1>${message}</h1>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c"
+           uri="http://java.sun.com/jsp/jstl/core" %>
 
-    <form  method="post" action="${requestaddress}">
-        <input type="hidden" id="unsigned_field_names" name="unsigned_field_names" value="card_type,card_cvn,card_number,card_expiry_date"/>
-        <input type="hidden" id="card_number" name="card_number" value="4111111111111111"/>
-        <input type="hidden" id="card_cvn" name="card_cvn" value="123"/>
-        <input type="hidden" id="card_type" name="card_type" value="001"/>
-        <input type="hidden" id="card_expiry_date" name="card_expiry_date" value="03-2019"/>
-    ${content}
-        <input type="submit" name="submit" value="Buy Now">
-    </form>
+<html>
+<head>
+    <title>Unsigned Data Fields</title>
+    <link rel="stylesheet" type="text/css" href="../css/payment.css"/>
+</head>
+<body>
+<form id="payment_confirmation" action="${requestaddress}" method="post">
+
+<fieldset id="confirmation">
+    <legend>Signed Data Fields</legend>
+These fields have been signed on your server, and a signature has been generated.  This will <br> detect tampering with these values as they pass through the consumers browser to the SASOP endpoint.<BR/>
+    <div>
+        <c:forEach var="item" items="${content}">
+            <div>
+                <span class="fieldName">${item.key}:</span><span class="fieldValue">${item.value}</span>
+            </div>
+        </c:forEach>
+    </div>
+</fieldset>
+    <c:forEach var="item" items="${content}"><input type="hidden" id="${item.key}" name="${item.key}" value="${item.value}"/></c:forEach>
+        <fieldset>
+        <legend>Unsigned Data Fields</legend>  
+        Card data fields are posted directly to CyberSource, together with the fields above.  These field <br>
+        names will need to be included in the unsigned_field_names.
+        <BR/>
+        <div id="UnsignedDataSection" class="section">
+        <span>card_type:</span><input type="text" name="card_type"><br/>
+        <span>card_number:</span><input type="text" name="card_number"><br/>
+        <span>card_expiry_date:</span><input type="text" name="card_expiry_date"><br/>
+	</div>
+    </fieldset>
+  <input type="submit" id="submit" value="Confirm "/>
+  <script type="text/javascript" src="../js/jquery-1.7.min.js"></script>
+  <script type="text/javascript" src="../js/payment_form.js"></script>
+
+</form>
 </body>
 </html>

@@ -11,6 +11,8 @@ import sun.misc.BASE64Encoder;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -24,9 +26,9 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
 
     private static final Logger LOG = Logger.getLogger(DefaultCybersourceUtils.class);
 
-    private static int cartidnumber = 12345677;
 
-    private String getSessionId()
+
+    public String getSessionId()
     {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
@@ -52,103 +54,67 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
             return true;
         else return false;
     }
-   private HashMap<String,String> getRequestMap()
-   {
-        HashMap<String,String> request = new HashMap<String,String>();
-/*
-        request.put("payPalButtonCreateService_run", "true" );
-        request.put("payPalButtonCreateService_buttonType","buy");
-        request.put("merchantID","cybersource_test_merchant_id");
-        request.put("merchantReferenceCode","PK48ASBE54XCQ");
-        request.put("billTo_firstName","Joe");
-        request.put("billTo_lastName","Smith");
-        request.put("billTo_street1","1040 Elm St.");
-        request.put("billTo_city","San Jose");
-        request.put("billTo_state","CA");
-        request.put("billTo_postalCode","95127");
-        request.put("billTo_country","US");
-        request.put("shipTo_firstName","Joe");
-        request.put("shipTo_lastName","Smith");
-        request.put("shipTo_street1","1040 Elm St.");
-        request.put("shipTo_city","San Jose");
-        request.put("shipTo_state","CA");
-        request.put("shipTo_postalCode","95127");
-        request.put("shipTo_country","US");
-        request.put("purchaseTotals_grandTotalAmount","25.99");
-        request.put("purchaseTotals_taxAmount","2.55");
-        request.put("purchaseTotals_freightAmount","4.95");
-        request.put("purchaseTotals_currency","USD");
-        request.put("paypal_cancel_return","http://paypalcancel.example.com");
-        request.put("paypal_return","http://paypalsuccess.example.com");
-        request.put("paypal_item_name","Nouveau Lamp");
-        request.put("paypal_item_number","3362710");*/
 
-        
-        request.put("amount","45.94");
-        request.put("bill_to_address_city","San Jose");
-        request.put("bill_to_address_country","US");
-        request.put("bill_to_address_line1","address1");
-        request.put("bill_to_address_line2","address2");
-        request.put("bill_to_address_postal_code","95127");
-        request.put("bill_to_email","testcard@test.com");
-        request.put("bill_to_forename","hhhhtest");
-        request.put("bill_to_surname","testh");
-        //request.put("card_cvn","123");
-        //request.put("card_expiry_date","03-2019");
-        //request.put("card_number","4111111111111111");
-        //request.put("card_type","001");
-        request.put("currency","USD");
-        //request.put("customer_cookies_accepted","true");
-        //request.put("customer_ip_address","170.248.1.192");
-        //request.put("device_fingerprint_id","s18933746866080");
-        request.put("item_0_quantity","1");
-        request.put("item_0_sku","0282974001004");
-        request.put("item_0_unit_price","39.99");
-        request.put("item_1_code","shipping_only");
-        request.put("item_1_name","shipping");
-        request.put("item_1_quantity","1");
-        request.put("item_1_sku","1");
-        request.put("item_1_unit_price","5.95");
-        request.put("line_item_count","2");
-        request.put("locale","en-us");
-        request.put("merchant_defined_data1", "testcard@test.com");
-        request.put("merchant_defined_data2","0");
-        request.put("merchant_defined_data22","Card");
-        request.put("merchant_defined_data8","home-delivery");
-        request.put("payment_method","card");
-        //request.put("profile_id","FRWEB");
-        request.put("reference_number","18281005");
-        request.put("ship_to_address_city","San Jose");
-        request.put("ship_to_address_country","US");
-        request.put("ship_to_address_line1","address1");
-        request.put("ship_to_address_line2","address2");
-        request.put("ship_to_address_postal_code","95127");
-        request.put("ship_to_forename","hhhhtest");
-        request.put("ship_to_surname","testh");
-                request.put("transaction_type","authorization,create_payment_token");
-        //request.put("unsigned_field_names","card_type,card_cvn,card_number,card_expiry_date");
-
-       return request;
-
-    }
 
 
     @Override
+    public Map<String,String> collectDataAndSign(final String returnURL, final Properties props,Map<String,String> signedData) throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+
+
+
+
+
+
+
+        signedData.put("signature",sign(buildDataToSign(signedData),props.getProperty("cybersource.sign.secretkey") ,props.getProperty("cybersource.sign.algorithm") ));
+
+        return signedData;
+    }
+
+    private String sign(String data, String secretKey, String encodingAlgo) throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), encodingAlgo);
+        Mac mac = Mac.getInstance(encodingAlgo);
+        mac.init(secretKeySpec);
+        byte[] rawHmac = mac.doFinal(data.getBytes("UTF-8"));
+        return DatatypeConverter.printBase64Binary(rawHmac).replace("\n", "");
+    }
+
+    private String buildDataToSign(Map<String, String> params) {
+        String[] signedFieldNames = String.valueOf(params.get("signed_field_names")).split(",");
+        ArrayList<String> dataToSign = new ArrayList<String>();
+        for (String signedFieldName : signedFieldNames) {
+            dataToSign.add(signedFieldName + "=" + String.valueOf(params.get(signedFieldName)));
+        }
+        return commaSeparate(dataToSign);
+    }
+
+    private String commaSeparate(ArrayList<String> dataToSign) {
+        StringBuilder csv = new StringBuilder();
+        for (Iterator<String> it = dataToSign.iterator(); it.hasNext(); ) {
+            csv.append(it.next());
+            if (it.hasNext()) {
+                csv.append(",");
+            }
+        }
+        return csv.toString();
+    }
+
+    /*@Override
     public String collectDataAndSign(final String returnURL, final String clientIp, final Properties props) {
 
-        /*if (cartModel == null) {
+        *//*if (cartModel == null) {
             throw new IllegalArgumentException("Cart Model is null");
-        }*/
+        }*//*
 
         Map<String, String> signedData = getRequestMap();
-        /*if (MapUtils.isNotEmpty(this.request)) {
+        *//*if (MapUtils.isNotEmpty(this.request)) {
             signedData.putAll(request);
-        }*/
+        }*//*
 
         //cartModel.getCode()
         String merchantReferenceCode = String.valueOf(cartidnumber+=1);
-       /* cartModel.setMerchantReferenceCode(merchantReferenceCode);
-        modelService.save(cartModel);*/
+       *//* cartModel.setMerchantReferenceCode(merchantReferenceCode);
+        modelService.save(cartModel);*//*
 
         // Secure Acceptance Profile ID (obtained from the CyberSource EBC)
         String profileID = props.getProperty("cybersource.profileId");
@@ -163,7 +129,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
 
         // Add core data to map
 
-       /* Double totalPrice = 45.94;
+       *//* Double totalPrice = 45.94;
         if (totalPrice != null) {
             signedData.put("amount", totalPrice.toString());
         }
@@ -171,12 +137,12 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         CurrencyModel currency = cartModel.getCurrency();
         if (currency != null) {
             signedData.put("currency", currency.getIsocode());
-        }*/
+        }*//*
 
-      /*  DeliveryModeModel deliveryMode = cartModel.getDeliveryMode();
+      *//*  DeliveryModeModel deliveryMode = cartModel.getDeliveryMode();
         if (deliveryMode != null && StringUtils.isNotEmpty(deliveryMode.getCode())) {
             signedData.put("merchant_defined_data8", deliveryMode.getCode());
-        }*/
+        }*//*
 
         signedData.put("access_key", accessKey);
         signedData.put("profile_id", profileID);
@@ -193,7 +159,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
             signedData.put("customer_ip_address", clientIp);
         }
 
-       /* UserModel userModel = userService.getCurrentUser();
+       *//* UserModel userModel = userService.getCurrentUser();
         if (userModel != null) {
 
             String uid = userModel.getUid();
@@ -208,7 +174,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
             }
 
             // Reply URL (Override)
-        }*/
+        }*//*
 
         //signedData.put("merchant_defined_data22", CybersourceConstants.CYBERSOURCE_PAYMENT_METHOD);
 
@@ -219,7 +185,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         }
 
         int index = 0;
-       /* List<AbstractOrderEntryModel> orderEntryList = cartModel.getEntries();
+       *//* List<AbstractOrderEntryModel> orderEntryList = cartModel.getEntries();
         if (CollectionUtils.isNotEmpty(orderEntryList)) {
             for (AbstractOrderEntryModel orderEntry : orderEntryList) {
 
@@ -239,9 +205,9 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
                 }
 
             }
-        }*/
+        }*//*
 
-        /*Integer itemCount = CollectionUtils.size(orderEntryList);
+        *//*Integer itemCount = CollectionUtils.size(orderEntryList);
 
         if (cartModel.getDiscountedDeliveryCost() != null) {
             signedData.put("item_" + index + "_code", CybersourceConstants.CYBERSOURCE_SHIPPING_ITEM_CODE);
@@ -250,12 +216,12 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
             signedData.put("item_" + index + "_unit_price", cartModel.getDiscountedDeliveryCost().toString());
             signedData.put("item_" + index + "_quantity", BigInteger.ONE.toString());
             ++itemCount;
-        }*/
+        }*//*
 
         //signedData.put("line_item_count", itemCount.toString());
 
         // Add bill_to data to map
-        /*AddressModel billingAddress = cartModel.getBillingAddress();
+        *//*AddressModel billingAddress = cartModel.getBillingAddress();
         if (billingAddress != null) {
 
             signedData.put("bill_to_forename", billingAddress.getFirstname());
@@ -289,7 +255,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
             if (deliveryAddress.getCountry() != null) {
                 signedData.put("ship_to_address_country", deliveryAddress.getCountry().getIsocode());
             }
-        }*/
+        }*//*
 
         signedData.put("override_custom_receipt_page", props.getProperty("cybersource.returnurl"));
 
@@ -341,7 +307,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         return stringBuf.toString();
     }
 
-    public String sign(final Map<String, String> secureAcceptanceResponse,Properties props) throws InvalidKeyException, NoSuchAlgorithmException {
+    *//*public String sign(final Map<String, String> secureAcceptanceResponse,Properties props) throws InvalidKeyException, NoSuchAlgorithmException {
         return sign(buildDataToSign(secureAcceptanceResponse), props);
     }
     private static String buildDataToSign(Map<String, String> secureAcceptanceResponse) {
@@ -362,6 +328,6 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         byte[] rawHmac = mac.doFinal(data.getBytes());
         BASE64Encoder encoder = new BASE64Encoder();
         return encoder.encodeBuffer(rawHmac).replace("\n", StringUtils.EMPTY);
-    }
+    }*/
 
 }
