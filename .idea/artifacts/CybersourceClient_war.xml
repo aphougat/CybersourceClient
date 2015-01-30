@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="CybersourceClient:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="CybersourceClient.war">
+      <element id="artifact" artifact-name="CybersourceClient:war exploded" />
+    </root>
+  </artifact>
+</component>
