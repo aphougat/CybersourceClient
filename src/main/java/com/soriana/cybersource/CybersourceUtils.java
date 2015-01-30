@@ -1,5 +1,10 @@
 package com.soriana.cybersource;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -7,5 +12,8 @@ import java.util.Properties;
  */
 public interface CybersourceUtils {
 
-    public String collectDataAndSign(final String returnURL, final String clientIp, final Properties props);
+    public Map<String,String> collectDataAndSign(final String returnURL,  final Properties props,final Map<String,String> map) throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException;
+
+    public String getSessionId();
+
 }
