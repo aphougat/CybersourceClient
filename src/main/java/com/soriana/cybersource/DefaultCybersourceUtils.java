@@ -83,7 +83,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         request.put("paypal_item_name","Nouveau Lamp");
         request.put("paypal_item_number","3362710");*/
 
-        //request.put("access_key","cfe9195d645b3e70bf750cf3d4fa2996");
+        
         request.put("amount","45.94");
         request.put("bill_to_address_city","San Jose");
         request.put("bill_to_address_country","US");
@@ -115,9 +115,8 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         request.put("merchant_defined_data2","0");
         request.put("merchant_defined_data22","Card");
         request.put("merchant_defined_data8","home-delivery");
-        //request.put("override_custom_receipt_page","https://amt-www2.hm.com:443/fr_fr/checkout/cybersource/response");
         request.put("payment_method","card");
-        request.put("profile_id","HMFRWEB");
+        request.put("profile_id","FRWEB");
         request.put("reference_number","18281005");
         request.put("ship_to_address_city","San Jose");
         request.put("ship_to_address_country","US");
@@ -126,11 +125,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         request.put("ship_to_address_postal_code","95127");
         request.put("ship_to_forename","hhhhtest");
         request.put("ship_to_surname","testh");
-        //request.put("signature","KhDaVJQjUWPAKjUI/BlzAvBO5m4z/Rb2fBdA0oo6yIM=");
-        //request.put("signed_date_time","2015-01-29T08:03:31Z");
-        //request.put("signed_field_names","override_custom_receipt_page,bill_to_email,item_1_code,profile_id,transaction_type,locale,bill_to_address_line1,bill_to_address_line2,transaction_uuid,currency,amount,ship_to_forename,ship_to_address_postal_code,item_1_unit_price,item_1_sku,merchant_defined_data1,access_key,merchant_defined_data2,ship_to_surname,item_1_name,unsigned_field_names,ship_to_address_city,bill_to_address_city,merchant_defined_data8,merchant_defined_data22,signed_date_time,bill_to_surname,customer_ip_address,line_item_count,item_0_unit_price,bill_to_address_country,bill_to_address_postal_code,bill_to_forename,reference_number,item_0_quantity,ship_to_address_line1,customer_cookies_accepted,ship_to_address_line2,item_1_quantity,device_fingerprint_id,item_0_sku,payment_method,ship_to_address_country,signed_field_names");
-        request.put("transaction_type","authorization,create_payment_token");
-        //request.put("transaction_uuid","HMFRWEB-18281005-20150129090331");
+                request.put("transaction_type","authorization,create_payment_token");
         request.put("unsigned_field_names","card_type,card_cvn,card_number,card_expiry_date");
 
        return request;
@@ -190,7 +185,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         signedData.put("payment_method", "card");
 
         //from cybersource documentation the locale HAS to be "en"
-        //signedData.put("locale", HMCybersourceConstants.TOKENIZATION_LOCALE);
+        //signedData.put("locale", CybersourceConstants.TOKENIZATION_LOCALE);
         signedData.put("reference_number", merchantReferenceCode);
         signedData.put("device_fingerprint_id", getSessionId());
 
@@ -215,7 +210,7 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
             // Reply URL (Override)
         }*/
 
-        //signedData.put("merchant_defined_data22", HMCybersourceConstants.CYBERSOURCE_PAYMENT_METHOD);
+        //signedData.put("merchant_defined_data22", CybersourceConstants.CYBERSOURCE_PAYMENT_METHOD);
 
         // Add cookies accepted info to map
         if (getSessionAttribute("customerCookiesAccepted") != null) {
@@ -249,8 +244,8 @@ public class DefaultCybersourceUtils implements CybersourceUtils{
         /*Integer itemCount = CollectionUtils.size(orderEntryList);
 
         if (cartModel.getDiscountedDeliveryCost() != null) {
-            signedData.put("item_" + index + "_code", HMCybersourceConstants.CYBERSOURCE_SHIPPING_ITEM_CODE);
-            signedData.put("item_" + index + "_name", HMCybersourceConstants.CYBERSOURCE_SHIPPING_ITEM_NAME);
+            signedData.put("item_" + index + "_code", CybersourceConstants.CYBERSOURCE_SHIPPING_ITEM_CODE);
+            signedData.put("item_" + index + "_name", CybersourceConstants.CYBERSOURCE_SHIPPING_ITEM_NAME);
             signedData.put("item_" + index + "_sku", String.valueOf(index));
             signedData.put("item_" + index + "_unit_price", cartModel.getDiscountedDeliveryCost().toString());
             signedData.put("item_" + index + "_quantity", BigInteger.ONE.toString());
