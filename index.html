@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Cybersourceclient : A sample cybersource client using https://testsecureacceptance.cybersource.com/silent/pay">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Cybersourceclient</title>
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Cybersourceclient by aphougat</title>
   </head>
 
   <body>
+    <div id="container">
+      <div class="inner">
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/aphougat/CybersourceClient">View on GitHub</a>
-
-          <h1 id="project_title">Cybersourceclient</h1>
-          <h2 id="project_tagline">A sample cybersource client using https://testsecureacceptance.cybersource.com/silent/pay</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/aphougat/CybersourceClient/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/aphougat/CybersourceClient/tarball/master">Download this project as a tar.gz file</a>
-            </section>
+        <header>
+          <h1>Cybersourceclient</h1>
+          <h2>A sample cybersource client using Secure Acceptance Silent Order POST</h2>
         </header>
-    </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/aphougat/CybersourceClient/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/aphougat/CybersourceClient/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/aphougat/CybersourceClient" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p>Secure Acceptance Silent Order POST</p>
+
+<p>This guide is written for merchants who want to customize and control their own customer checkout experience, including receipt and response pages. You will have full control to store and control customer information before sending it to CyberSource to process transactions. You will use the Business Center to review and manage all of your orders.
+Using Secure Acceptance Silent Order POST requires moderate scripting skills. You must create a security script and modify your HTML form to pass order information to CyberSource. Your web site must meet the following requirements:
+ Have shopping-cart or customer order creation software.
+ Contain product pages in one of the supported scripting languages (see page 29).
+ The IT infrastructure must be Public Key Infrastructure (PKI) enabled to use SSL- based form POST submissions.
+ The IT infrastructure must be able to digitally sign customer data prior to submission to Secure Acceptance.</p>
+
+<p>￼</p>
+
+<p>Prerequisites:
+Access to : <a href="https://testsecureacceptance.cybersource.com/silent/pay">https://testsecureacceptance.cybersource.com/silent/pay</a>
+Cybersource Account : <a href="https://ebctest.cybersource.com/">https://ebctest.cybersource.com/</a>
+Cybersource Secure Acceptance Silent Order POST Profile</p>
+
+<h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
 
 <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
@@ -62,18 +78,15 @@ $ git checkout gh-pages
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 
 <p>Having trouble with Pages? Check out the documentation at <a href="https://help.github.com/pages">https://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
+        </section>
+
+        <footer>
+          Cybersourceclient is maintained by <a href="https://github.com/aphougat">aphougat</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
     </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Cybersourceclient maintained by <a href="https://github.com/aphougat">aphougat</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
   </body>
 </html>
